@@ -1,7 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios'
 
 import './styles.css'
+import TodoItem from './todo-item'
+
 export class App  extends React.Component {
     constructor() {
         super()
@@ -10,6 +13,12 @@ export class App  extends React.Component {
             todo: "",
             todos: []
         }
+    }
+
+    renderTodos = () => {
+        return this.state.todos.map(todo => {
+            return <TodoItem key={todo.id} todo={todo}/>
+        })
     }
 
     componentDidMount() {
@@ -24,7 +33,23 @@ export class App  extends React.Component {
 
     addTodo = (event) => {
         event.preventDefault()
-        console.log('I added a todo')
+        axios({
+            method: "post",
+            url: "http://localhost:5000/todo",
+            headers: { "content-type": "application/json"},
+            data: {
+                title: this.state.todo,
+                done: false
+            }
+        })
+        .then(data => {
+            this.setState({
+                todos: [...this.state.todos, data.data]
+            })
+        })
+        .catch((error) => {
+            console.log("add todo error", error)
+        })
     }
 
     handleChange = (event) => {
@@ -48,6 +73,7 @@ export class App  extends React.Component {
                     />
                     <button type="submit" >Add</button>
                 </form>
+                {this.renderTodos()}
             </div>
         )
     }
