@@ -60,7 +60,9 @@ export class App  extends React.Component {
         })
         .then(data => {
             this.setState({
-                todos: [...this.state.todos, data.data]
+                todos: [...this.state.todos, data.data],
+                // todos: [data.data, ...this.state.todos],
+                todo: ""
             })
         })
         .catch((error) => {
