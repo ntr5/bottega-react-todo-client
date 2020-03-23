@@ -14,10 +14,26 @@ export class App  extends React.Component {
             todos: []
         }
     }
+    
+    deleteItem = id => {
+        fetch(`http:localhost:5000/todo/${id}`, {
+            method: "DELETE"
+        })
+        .then(() => {
+            this.setState({
+                todos: this.state.todos.filter(todo => {
+                    return todo.id !== id
+                })
+            })
+        })
+        .catch(error => {
+            console.log("deletItem error", error)
+        })
+    }
 
     renderTodos = () => {
         return this.state.todos.map(todo => {
-            return <TodoItem key={todo.id} todo={todo}/>
+            return <TodoItem key={todo.id} todo={todo} deleteItem={this.deleteItem}/>
         })
     }
 
@@ -71,7 +87,7 @@ export class App  extends React.Component {
                         value={this.state.todo}
                         onChange={this.handleChange}
                     />
-                    <button type="submit" >Add</button>
+                    <button className="add-btn" type="submit" >Add</button>
                 </form>
                 {this.renderTodos()}
             </div>
