@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 
 class TodoItem extends React.Component {
@@ -11,7 +11,7 @@ class TodoItem extends React.Component {
     }
 
     toggleDone = () => {
-        fetch(`http://localhost:5000/todo/${this.props.todo.id}`, {
+        fetch(`https://bottega-flask-todo-api-nrs.herokuapp.com/todo/${this.props.todo.id}`, {
             method: "PATCH",
             headers: {"content-type" : "application/json"},
             body: JSON.stringify({
